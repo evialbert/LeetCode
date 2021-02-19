@@ -19,8 +19,8 @@ class Solution:
                     break 
                 else:
                     num+=1
-            if board[row]==-1:#这行找不到有效放置方法，退回上一层
-                if row==0: #退出循环
+            if board[row]==-1:
+                if row==0: 
                     break
                 row-=1
                 num=board[row]+1
