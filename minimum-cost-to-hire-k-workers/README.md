@@ -1,0 +1,45 @@
+<h2>857. Minimum Cost to Hire K Workers</h2><h3>Hard</h3><hr><div><p>There are <code>n</code> workers.&nbsp; The <code>i</code>-th worker has a <code>quality[i]</code> and a minimum wage expectation <code>wage[i]</code>.</p>
+
+<p>Now we want to hire exactly <code>k</code>&nbsp;workers to form a <em>paid group</em>.&nbsp; When hiring a group of k workers, we must pay them according to the following rules:</p>
+
+<ol>
+	<li>Every worker in the paid group should be paid in the ratio of their quality compared to other workers in the paid group.</li>
+	<li>Every worker in the paid group must be paid at least their minimum wage expectation.</li>
+</ol>
+
+<p>Return the least amount of money needed to form a paid group satisfying the above conditions.</p>
+
+<p>&nbsp;</p>
+
+<ol>
+</ol>
+
+<div>
+<p><strong>Example 1:</strong></p>
+
+<pre><strong>Input: </strong>quality = <span id="example-input-1-1">[10,20,5]</span>, wage = <span id="example-input-1-2">[70,50,30]</span>, k = <span id="example-input-1-3">2</span>
+<strong>Output: </strong><span id="example-output-1">105.00000
+<strong>Explanation</strong>: </span><span>We pay 70 to 0-th worker and 35 to 2-th worker.</span>
+</pre>
+
+<div>
+<p><strong>Example 2:</strong></p>
+
+<pre><strong>Input: </strong>quality = <span id="example-input-2-1">[3,1,10,10,1]</span>, wage = <span id="example-input-2-2">[4,8,2,2,7]</span>, k = <span id="example-input-2-3">3</span>
+<strong>Output: </strong><span id="example-output-2">30.66667
+<strong>Explanation</strong>: </span><span>We pay 4 to 0-th worker, 13.33333 to 2-th and 3-th workers seperately.</span> 
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>Note:</strong></p>
+
+<ol>
+	<li><code>1 &lt;= k &lt;= n &lt;= 10000</code>, where <code>n = quality.length = wage.length</code></li>
+	<li><code>1 &lt;= quality[i] &lt;= 10000</code></li>
+	<li><code>1 &lt;= wage[i] &lt;= 10000</code></li>
+	<li>Answers within <code>10<sup>-5</sup></code> of the correct answer will be considered correct.</li>
+</ol>
+</div>
+</div>
+</div>
