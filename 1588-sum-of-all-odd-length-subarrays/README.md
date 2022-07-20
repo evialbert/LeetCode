@@ -1,8 +1,6 @@
-<h2><a href="https://leetcode.com/problems/sum-of-all-odd-length-subarrays/">1588. Sum of All Odd Length Subarrays</a></h2><h3>Easy</h3><hr><div><p>Given an array of positive integers&nbsp;<code>arr</code>, calculate the sum of all possible odd-length subarrays.</p>
+<h2><a href="https://leetcode.com/problems/sum-of-all-odd-length-subarrays/">1588. Sum of All Odd Length Subarrays</a></h2><h3>Easy</h3><hr><div><p>Given an array of positive integers <code>arr</code>, return <em>the sum of all possible <strong>odd-length subarrays</strong> of </em><code>arr</code>.</p>
 
-<p>A subarray is a contiguous&nbsp;subsequence of the array.</p>
-
-<p>Return&nbsp;<em>the sum of all odd-length subarrays of&nbsp;</em><code>arr</code>.</p>
+<p>A <strong>subarray</strong> is a contiguous subsequence of the array.</p>
 
 <p>&nbsp;</p>
 <p><strong>Example 1:</strong></p>
@@ -40,4 +38,9 @@ If we add all these together we get 1 + 4 + 2 + 5 + 3 + 7 + 11 + 10 + 15 = 58</p
 	<li><code>1 &lt;= arr.length &lt;= 100</code></li>
 	<li><code>1 &lt;= arr[i] &lt;= 1000</code></li>
 </ul>
+
+<p>&nbsp;</p>
+<p><strong>Follow up:</strong></p>
+
+<p>Could you solve this problem in O(n) time complexity?</p>
 </div>
