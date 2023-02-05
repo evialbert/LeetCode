@@ -1,22 +1,25 @@
 class Solution {
 public:
-    
-    int solve(vector<int> nums)
-    {
-        int n=nums.size();
-        vector<int> dp(n);
-        if(n>=1) dp[0]=nums[0];
-        if(n>=2) dp[1]=max(nums[0],nums[1]);
-        for(int i=2;i<n;i++)
-        {
-            dp[i]=max(dp[i-1],dp[i-2]+nums[i]);
+    int solve(vector<int> &v,int s,int e){
+        int n = v.size();
+        vector<int> dp(n,0);
+        int ans = 0;
+        for(int i = s; i <= e; i++){
+            if(s==i){
+                dp[i] = v[i];
+            }else if((s+1) == (i)){
+                dp[i] = max(v[i-1],v[i]);
+            }else{
+                dp[i] = max(v[i]+dp[i-2],dp[i-1]);
+            }
+            ans = max(ans,dp[i]);
         }
-        return dp[n-1];
+        return ans;
     }
-    
-    int rob(vector<int>& nums)
-    {
-        if(nums.size()==1) return nums[0];
-        return max(solve(vector<int>(nums.begin(),nums.end()-1)),solve(vector<int>(nums.begin()+1,nums.end())));
+    int rob(vector<int>& nums) {
+        if(nums.size() == 1){
+            return nums[0];
+        }
+        return max(solve(nums,0,nums.size()-2),solve(nums,1,nums.size()-1));
     }
 };
