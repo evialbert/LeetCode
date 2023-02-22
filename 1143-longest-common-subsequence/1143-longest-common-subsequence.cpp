@@ -1,35 +1,45 @@
 class Solution {
 public:
-    int LCS(string X, string Y,int m,int n)
+
+    // declare a dp
+    
+    int dp[1005][1005];
+    
+    int helper(string& str1, string& str2, int i1, int i2, int n1, int n2)
     {
-        int t[m+1][n+1];   //matrix
-
-        for(int i=0;i<m+1;i++)
-        {
-            for(int j =0;j<n+1;j++)
-            {
-                if(i==0 || j==0)    //base condition
-                {
-                    t[i][j] = 0;
-                }
-                else if(X[i-1] == Y[j-1])    //check if last element is equal or not
-                {
-                    t[i][j] = 1 + t[i-1][j-1];
-                }
-                else   //otherwise Find Max btw the remaining
-                {
-                    t[i][j] = max(t[i-1][j] , t[i][j-1]);
-                }
-            }
-        }
-        return t[m][n];    //return the ans
-    }
-
-    int longestCommonSubsequence(string X, string Y) {
-        int m = X.size();
-        int n = Y.size();
-
-        return LCS(X,Y,m,n);
+        // base case, if one of the string is empty
         
+        if(i1 == n1 || i2 == n2)
+            return 0;
+        
+        // if already calculated
+        
+        if(dp[i1][i2] != -1)
+            return dp[i1][i2];
+        
+        // if characters are matching
+        
+        if(str1[i1] == str2[i2])  
+            return dp[i1][i2] = 1 + helper(str1, str2, i1 + 1, i2 + 1, n1, n2);
+        
+        // if characters are not matching
+        
+        else
+        {
+            return dp[i1][i2] = max(helper(str1, str2, i1 + 1, i2, n1, n2), helper(str1, str2, i1, i2 + 1, n1, n2));
+        }
+    }
+    
+    int longestCommonSubsequence(string str1, string str2) {
+        
+        int n1 = str1.size();
+        
+        int n2 = str2.size();
+		
+		// initialize dp
+        
+        memset(dp, -1, sizeof(dp));
+        
+        return helper(str1, str2, 0, 0, n1, n2);
     }
 };
