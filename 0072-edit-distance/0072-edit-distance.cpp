@@ -1,23 +1,23 @@
 class Solution {
 public:
-    int editDistance(string& word1, string& word2, int m, int n, vector<vector<int>>& dp){
-        if(m == 0) return dp[m][n] = n;
-        if(n == 0) return dp[m][n] = m;
-        if(dp[m][n] != -1)
-            return dp[m][n];
-        if(word1[m-1] == word2[n-1]) 
-            return dp[m][n] = editDistance(word1, word2, m-1, n-1, dp);
-        else{
-            int insert = editDistance(word1, word2, m, n-1, dp);
-            int Delete = editDistance(word1, word2, m-1, n, dp);
-            int replace = editDistance(word1, word2, m-1, n-1, dp);
-            
-            return dp[m][n] = 1 + min({insert, Delete, replace});
+    int minDistance(string a, string b) {
+        vector<vector<int>>dp(a.size()+1,vector<int>(b.size()+1,0));
+        for(int i=0;i<=a.size();++i) dp[i][0]=i;
+        for(int j=0;j<=b.size();++j) dp[0][j]=j;
+        for(int i=1;i<=a.size();++i){
+            for(int j=1;j<=b.size();++j){
+                if(a[i-1]==b[j-1]) 
+                    dp[i][j]=dp[i-1][j-1];
+                else{
+                    int cnt=INT_MAX;               
+                    cnt=min(cnt,dp[i][j-1]+1);       //insert
+                    cnt=min(cnt,dp[i-1][j-1]+1);     //replace
+                    cnt=min(cnt,dp[i-1][j]+1);       //delete
+                    dp[i][j]=cnt;
+                }
+            }
         }
-    }
-    int minDistance(string word1, string word2) {
-        int m = word1.length(), n = word2.length();
-        vector<vector<int>> dp(m+1, vector<int>(n+1, -1));
-        return editDistance(word1, word2, m, n, dp);
+        
+    return dp[a.size()][b.size()];
     }
 };
