@@ -1,39 +1,24 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-    //there exists atleast one strictly increasing subarray due to pivot element
-    //using modified binary search 
-        int n=nums.size();
-        int s=0;
-        int e=n-1;
-        
-        while(s<=e){
-            int mid=s+(e-s)/2;
-            
-            if(nums[mid] == target) return mid;
-  //else if left subarray is str increasing then search only in the LEFT SUBARRAY          
-            else if(nums[mid]>=nums[s]){
-                if(target>=nums[s] && target <=nums[mid]){
-                    
-                    e =mid-1;//update the right pointer
-                    
-                }
+        int rot = nums[0];
+        int l = 0, r = nums.size()-1;
+        while(l <= r) {
+            int mid = (l+r)/2;
+            if (nums[mid] == target)
+                return mid;
+            if (target >= rot) {
+                if (nums[mid] < rot || (nums[mid] >= rot && nums[mid] > target))
+                    r = mid-1;
                 else
-                    s=mid+1;//update the left pointer
-            }
- //else search in the RIGHT SUBARRAY
-            else{
-                if(target>=nums[mid] && target<=nums[e]){
-                    
-                    s=mid+1;
-                    
-                }
+                    l = mid+1;
+            } else {
+                if (nums[mid] >= rot || (nums[mid] < rot && nums[mid] < target))
+                    l = mid+1;
                 else
-                    e=mid-1;
+                    r = mid-1;
             }
-            
         }
-        
-        return -1;//if it is not PRESENT
+        return -1;
     }
 };
