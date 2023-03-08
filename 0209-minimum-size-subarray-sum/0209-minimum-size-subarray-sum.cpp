@@ -1,20 +1,31 @@
 class Solution {
 public:
-    int minSubArrayLen(int target, vector<int>& nums) {
-        int ans=INT_MAX;
-        int left=0,right=0,sum=0,ln=nums.size();
-        while(right<ln){
-            sum+=nums[right];
-            if(sum>=target){
-                while(sum>=target){
-                    sum-=nums[left];
-                    left++;
+    int binsearch(vector <int>& a,int l, int h, int x) {
+            while (l <= h) {
+                int mid = (l + h) /2;
+                if (a[mid] >= x) {
+                    h = mid - 1;
+                    if (h < 0) return h + 1;
+                    if (a[h] < x) return h+1;
+                } else {
+                    l = mid + 1;
                 }
-                ans=min(ans,(right-left+2));
+                
             }
-            right++;
+            return -1;
         }
-        if(ans==INT_MAX) return 0;
-        return ans;
+
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size(), x, ind;
+        for (int i = 1; i < n; i++) nums[i] = nums[i] + nums[i-1];
+        if (nums[n-1] < target) return 0;
+        int mn = INT_MAX;
+        for (int i = 0; i < n; i++) {
+            x = i == 0 ? target : target + nums[i-1];
+            ind = binsearch(nums, i, n-1, x);
+            if (ind != -1) mn = min(mn, ind - i + 1);
+        }
+        return mn;
+        
     }
 };
