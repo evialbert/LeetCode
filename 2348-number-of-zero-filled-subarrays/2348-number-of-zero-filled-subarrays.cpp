@@ -1,20 +1,17 @@
 class Solution {
 public:
-    long long subarray(long long n){
-        return n*(n+1)/2;
-    }
     long long zeroFilledSubarray(vector<int>& nums) {
-        long long s=nums.size();
-        long long count=0;
-        long long ans=0;   
-        for(auto x:nums){
-            if(x==0) count++;
+        long long a = 0;
+        long long b = 0;
+        for(int i = 0 ;i<nums.size();i++){
+            if(nums[i]==0)b = b+1;
             else{
-                ans=ans+subarray(count);
-                count=0;
+                a = ((b*(b+1))/2 )+a;
+                b=0;
             }
         }
-        ans=ans+subarray(count);
-        return ans;
+        a = ((b*(b+1))/2)+a;
+        return a;
+        
     }
 };
