@@ -1,28 +1,35 @@
 class Solution {
 public:
-    
-    void solve(int index, vector<int>& nums, vector<vector<int>>& ans){
-        if(index == nums.size()){
-            ans.push_back(nums);
+    void help(vector<vector<int>> &ans,vector<int> &perm,unordered_map<int,int> &count,int n){
+        if(perm.size()==n)
+        {
+            ans.push_back(perm);
             return;
         }
-        unordered_set<int> sett;
-        for(int i = index; i < nums.size(); i++)
+        unordered_map<int,int> :: iterator it=count.begin();
+        while(it!=count.end())
         {
-            if(i != index && nums[i] == nums[index]) continue;
-            if(sett.find(nums[i]) != sett.end()) continue;
-            sett.insert(nums[i]);
-            swap(nums[index], nums[i]);
-            solve(index+1, nums, ans);
-            swap(nums[index], nums[i]);
+            if(it->second!=0)
+            {
+                perm.push_back(it->first);
+                it->second--;
+                help(ans,perm,count,n);
+                it->second++;
+                perm.pop_back();
+            }
+            it++;
         }
     }
     
     vector<vector<int>> permuteUnique(vector<int>& nums) {
-        vector<vector<int>> ans;
-        sort(nums.begin(), nums.end());
-        solve(0,nums, ans);
         
+        vector<vector<int>> ans;
+        vector<int> perm;
+        unordered_map<int,int> count;
+        for(int i=0;i<nums.size();i++)
+            count[nums[i]]++;
+        
+        help(ans,perm,count,nums.size());
         return ans;
     }
 };
