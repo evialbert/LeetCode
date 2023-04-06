@@ -1,24 +1,24 @@
 class Solution {
-
-    void solve(int ind,int target,vector<int>& ar,vector<int>& temp,vector<vector<int>>& ans){
-        if(target==0){
-            ans.push_back(temp);
-            return;
-        }
-        for(int i=ind;i<ar.size();i++){
-            if(i>ind && ar[i]==ar[i-1]) continue;
-            if(ar[i]>target) break;
-            temp.push_back(ar[i]);
-            solve(i+1,target-ar[i],ar,temp,ans);
-            temp.pop_back();
-        }
+public:
+    void recur(int i, int t, vector<int> &v, vector<int> &temp, set<vector<int>> &ans){
+      if(t == 0){
+        ans.insert(temp);
+        return;
+      }
+      for(int idx = i; idx < v.size(); idx++){
+        if(idx > i and v[idx] == v[idx - 1]) continue;
+        if(t - v[idx] < 0) break;
+        temp.emplace_back(v[idx]);
+        recur(idx + 1, t - v[idx], v, temp, ans);
+        temp.pop_back();
+      }
     }
-    public:
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        sort(candidates.begin(),candidates.end());
-        vector<int> temp;
-        vector<vector<int>> ans;
-        solve(0,target,candidates,temp,ans);
-        return ans;
+    vector<vector<int>> combinationSum2(vector<int>& v, int t) {
+      set<vector<int>> anst;
+      vector<int> temp;
+      sort(v.begin(), v.end());
+      recur(0, t, v, temp, anst);
+      vector<vector<int>> ans(anst.begin(), anst.end());
+      return ans;
     }
 };
