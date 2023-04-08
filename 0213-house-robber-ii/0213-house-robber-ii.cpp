@@ -1,25 +1,25 @@
 class Solution {
 public:
-    int solve(vector<int> &v,int s,int e){
-        int n = v.size();
-        vector<int> dp(n,0);
-        int ans = 0;
-        for(int i = s; i <= e; i++){
-            if(s==i){
-                dp[i] = v[i];
-            }else if((s+1) == (i)){
-                dp[i] = max(v[i-1],v[i]);
-            }else{
-                dp[i] = max(v[i]+dp[i-2],dp[i-1]);
-            }
-            ans = max(ans,dp[i]);
+    int houseRobber(vector<int> &arr) {
+        int n = arr.size();
+        int prev2 = 0;
+        int prev = arr[0];
+        int curr;
+        for (int i=1; i<n; i++) {
+            int pick = arr[i];
+            if (i > 1) pick += prev2;
+            int notPick = 0 + prev;
+            curr = max(pick, notPick);
+            prev2 = prev;
+            prev = curr;
         }
-        return ans;
+        return prev;
     }
     int rob(vector<int>& nums) {
-        if(nums.size() == 1){
-            return nums[0];
-        }
-        return max(solve(nums,0,nums.size()-2),solve(nums,1,nums.size()-1));
+        int n = nums.size();
+        if (n == 1) return nums[0];
+        vector<int> temp1(begin(nums), end(nums)-1);
+        vector<int> temp2(begin(nums)+1, end(nums));
+        return max(houseRobber(temp1), houseRobber(temp2));
     }
 };
