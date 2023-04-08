@@ -1,34 +1,24 @@
 class Solution {
 public:
-    vector<int>dp;
-    bool canJump(vector<int>& nums) 
-    {
-        dp.resize(nums.size(),-1);
-        int idx=0;
-        return fun(nums,idx);        
-    }
-    bool fun(vector<int>&nums,int idx)
-    {
-        if(idx >=nums.size())
-        return 0;
+    bool canJump(vector<int>& nums) {
 
-        if(idx == nums.size()-1)
-        return 1;
-
-        if(dp[idx]!=-1)
-        {
-            return dp[idx];
-        }
-
-        int k = nums[idx];
-
-        for(int i=1;i<=k;i++)
-        {
-            if(fun(nums,idx+i)==true)
-            {
-                return dp[idx]=1;
+        // DP Tabulation method
+        vector<int> dp(nums.size(),-1);
+        dp[0]=nums[0];
+        for(int i=1;i<nums.size();i++){
+            //Check if that place is reachabale or not.
+            if(dp[i-1]>0){
+                //Counting the steps and updating the values after each iteration
+                dp[i]=max(dp[i-1]-1,nums[i]); 
+            }
+            else{
+                dp[i]=-1;
             }
         }
-        return dp[idx]=0;
+        //If that step is reachable, return true.
+        if(dp[nums.size()-1]!=-1){
+            return true;
+        }
+        return false;
     }
 };
