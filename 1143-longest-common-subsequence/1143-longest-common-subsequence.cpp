@@ -1,45 +1,21 @@
 class Solution {
 public:
+    string s1, s2;
+    vector<vector<int>> dp; //cache of program
+    int util(int i, int j){
+        if(i>=s1.size() || j>=s2.size())return 0; //if any index goes out of bound then we should return
 
-    // declare a dp
-    
-    int dp[1005][1005];
-    
-    int helper(string& str1, string& str2, int i1, int i2, int n1, int n2)
-    {
-        // base case, if one of the string is empty
-        
-        if(i1 == n1 || i2 == n2)
-            return 0;
-        
-        // if already calculated
-        
-        if(dp[i1][i2] != -1)
-            return dp[i1][i2];
-        
-        // if characters are matching
-        
-        if(str1[i1] == str2[i2])  
-            return dp[i1][i2] = 1 + helper(str1, str2, i1 + 1, i2 + 1, n1, n2);
-        
-        // if characters are not matching
-        
-        else
-        {
-            return dp[i1][i2] = max(helper(str1, str2, i1 + 1, i2, n1, n2), helper(str1, str2, i1, i2 + 1, n1, n2));
+        if(dp[i][j]!= -1)return dp[i][j]; //if cache cell already filled then is there any need to calculate same task again.
+        if(s1[i]==s2[j]){//matching
+            return dp[i][j]= util(i+1, j+1)+1;//adding 1 to increase count and filling it in the brain
+        }else{//if chars not matching we have two options either increase index of s1 or s2 and return the one who gives max for us.
+            return dp[i][j]= max({util(i, j+1), util(i+1, j)});//brain fill.
         }
     }
-    
-    int longestCommonSubsequence(string str1, string str2) {
-        
-        int n1 = str1.size();
-        
-        int n2 = str2.size();
-		
-		// initialize dp
-        
-        memset(dp, -1, sizeof(dp));
-        
-        return helper(str1, str2, 0, 0, n1, n2);
+
+    int longestCommonSubsequence(string text1, string text2) {
+        s1= text1, s2= text2;
+        dp.resize(text1.size()+1, vector<int>(text2.size()+1, -1));//filling our cache cells as -1.
+        return util(0, 0);
     }
 };
