@@ -1,27 +1,26 @@
 class Solution {
-    vector<int> original;
-    int n;
-
+    vector<int> vec;
+    int size;
+    
 public:
     Solution(vector<int>& nums) {
-        original = nums;
-        n = original.size();
+        size = nums.size();
+        vec = nums;
     }
     
     vector<int> reset() {
-        return original;
+        return vec;
     }
     
     vector<int> shuffle() {
-        vector<int> shuffled = original;
-        
-        int leftsize = n;
-        for(int i = n - 1; i >= 0; i--) {
-            int j = rand() % leftsize;
-            swap(shuffled[i], shuffled[j]);
-            leftsize--;
+        vector<int> temp = vec;
+        int unshaffled = size;
+        for(int i = size - 1; i >= 0; --i){
+            int pos = rand() % unshaffled;
+            swap(temp[i], temp[pos]);
+            unshaffled--;
         }
-        return shuffled;
+        return temp;
     }
 };
 /**
