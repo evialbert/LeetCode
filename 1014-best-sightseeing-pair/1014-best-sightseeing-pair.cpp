@@ -1,25 +1,30 @@
 class Solution {
 public:
-    int dp[50005][3];
-    int f(vector<int>& arr,int taken,int idx){
-        if(taken >= 2)  return 0;
-        if(idx >= arr.size())   return -1e7;
-        else if(dp[idx][taken] != -1)   return dp[idx][taken];
-
-        int pick = arr[idx] + f(arr,taken+1,idx+1);
-        int notPick = f(arr,taken,idx+1);
+    int maxScoreSightseeingPair(vector<int>& arr) {
         
-        if(taken == 1){
-            pick = pick - idx;
-        }else{
-            pick += idx;
+        int n = arr.size();
+      
+        int maxi = INT_MIN;
+        
+        // left_max will keep track of max. value of (arr[i] + i)
+        
+        int left_max = arr[0];
+        
+        for(int i = 1; i < n; i++)
+        {
+            // find sum
+            
+            int sum = left_max + arr[i] - i;
+            
+            // update maxi
+            
+            maxi = max(maxi, sum);
+            
+            // update left_max
+            
+            left_max = max(left_max, arr[i] + i);
         }
-                
-        return dp[idx][taken] = max(pick,notPick);
-    }
-    
-    int maxScoreSightseeingPair(vector<int>& values) {
-        memset(dp,-1,sizeof(dp));
-        return f(values,0,0);
+        
+        return maxi;
     }
 };
