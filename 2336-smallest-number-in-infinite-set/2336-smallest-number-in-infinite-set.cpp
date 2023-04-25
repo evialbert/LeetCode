@@ -1,36 +1,18 @@
 class SmallestInfiniteSet {
-public:
-    
-    priority_queue<int, vector<int>, greater<int>> pq;
-    unordered_map<int,int>mp;
-    
-    SmallestInfiniteSet() {
-        for(int i=1;i<=1000;i++)
-        {
-            pq.push(i);
-        }
-        
-    }
-    
-    int popSmallest() {
-        
-        int val = pq.top();
-        mp[val]++;
-        pq.pop();
-        return val;
-        
-    }
-    
-    void addBack(int num) {
-        
-        if(mp[num]==1)
-        {
-             pq.push(num);
-            mp[num]--;
-        }
-       
-    }
-};
+  public:
+  set<int>s;
+  SmallestInfiniteSet() {
+      for(int i=1;i<=1000;++i) s.insert(i);
+      }
+     int popSmallest() {
+        int x = *s.begin();
+        s.erase(x);
+        return x;
+     }
+     void addBack(int num) {
+          s.insert(num);
+     }
+  };
 /**
  * Your SmallestInfiniteSet object will be instantiated and called as such:
  * SmallestInfiniteSet* obj = new SmallestInfiniteSet();
