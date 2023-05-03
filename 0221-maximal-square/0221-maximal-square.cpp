@@ -1,34 +1,30 @@
 class Solution {
 public:
-    int maximalSquare(vector<vector<char>>& matrix) {
-        int n  = matrix.size(), m = matrix[0].size();
-        vector<vector<int>>dp(n, vector<int>(m, -1));
-         for(int i=0; i<m; i++){
-            dp[0][i] = matrix[0][i] - '0';
-        }
-        for(int j = 0; j<n; j++){
-            dp[j][0] = matrix[j][0] - '0' ;
-        }
-        for(int i=1; i<n; i++){
-            for(int j=1; j<m; j++){
-                if(matrix[i][j]=='0'){dp[i][j] = 0;}
-                else{
-                dp[i][j] = min(dp[i-1][j], min(dp[i-1][j-1], dp[i][j-1]))  + 1;
-            }
-            }
-        }
+    int dp[301][301];
+    int solve(vector<vector<char>> &matrix, int i, int j, int m, int n)
+    {
+        if(i>=m || j>=n || matrix[i][j] == '0')
+            return 0;
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        return dp[i][j] = 1 + min(min(solve(matrix, i+1, j, m, n), solve(matrix, i, j+1, m, n)), solve(matrix, i+1, j+1, m, n));
+        
+    }
+    int maximalSquare(vector<vector<char>> &matrix) 
+    {
         int ans = 0;
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(dp[i][j]!=1 and dp[i][j]!=0){
-                    int area = dp[i][j]*dp[i][j];
-                    ans = max(area, ans);
-                }else{
-                    int area = dp[i][j];
-                    ans = max(area, ans);
-                }
+        int m = matrix.size();
+        int n = matrix[0].size();
+        memset(dp, -1, sizeof(dp));
+        for(int i=0; i<m; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(matrix[i][j] == '1')
+                    ans = max(ans, solve(matrix, i, j, m, n));
             }
         }
-        return ans;
+            
+        return ans*ans;
     }
 };
