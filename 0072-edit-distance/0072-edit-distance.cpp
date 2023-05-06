@@ -1,23 +1,28 @@
 class Solution {
 public:
+    // tabulation:
     int minDistance(string a, string b) {
-        vector<vector<int>>dp(a.size()+1,vector<int>(b.size()+1,0));
-        for(int i=0;i<=a.size();++i) dp[i][0]=i;
-        for(int j=0;j<=b.size();++j) dp[0][j]=j;
-        for(int i=1;i<=a.size();++i){
-            for(int j=1;j<=b.size();++j){
-                if(a[i-1]==b[j-1]) 
-                    dp[i][j]=dp[i-1][j-1];
-                else{
-                    int cnt=INT_MAX;               
-                    cnt=min(cnt,dp[i][j-1]+1);       //insert
-                    cnt=min(cnt,dp[i-1][j-1]+1);     //replace
-                    cnt=min(cnt,dp[i-1][j]+1);       //delete
-                    dp[i][j]=cnt;
-                }
+        int n=a.size(),m=b.size();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,0));
+        
+        // base:
+        for(int j=0;j<=m;++j) dp[0][j]=j; //1 based indexing
+        for(int i=0;i<=n;++i) dp[i][0]=i;
+        
+        for(int i=1;i<=n;++i){
+            for(int j=1;j<=m;++j){
+                if(a[i-1]==b[j-1]) dp[i][j]= 0 + dp[i-1][j-1];
+                 else{
+                     // not matched so perform 3 op's and take min of it
+                    int insert=1+dp[i][j-1];
+                    int delet=1+dp[i-1][j];
+                    int replace=1+dp[i-1][j-1];
+
+                    dp[i][j]=min({insert,delet,replace});
+                 }
+                
             }
         }
-        
-    return dp[a.size()][b.size()];
+        return dp[n][m];
     }
 };
