@@ -1,30 +1,20 @@
-class Solution {
-    
-    int Solve(vector<int>& nums, int target , vector<int> &dp)
+class Solution 
+{
+public: 
+    int combinationSum4(vector<int>& nums, int target) 
     {
-        if(target == 0)
+        vector<unsigned int> dp(target + 1);
+        dp[0] = 1;
+        sort (nums.begin(), nums.end());
+        for (int i = 1; i <= target; i++) 
         {
-             return 1 ;
+            for (auto it : nums) 
+            {
+                if (i < it) break;
+                dp[i] += dp[i - it];
+            }
         }
-        
-        if(dp[target] != -1)
-            return dp[target];
-        
-        int ans = 0;
-        for(int i = 0 ; i<nums.size() ; i++)
-        {
-           if(target - nums[i]>=0)
-               ans +=  Solve(nums, target - nums[i] , dp);
-        }
-        
-        return dp[target] = ans; 
+        return dp.back();
     }
     
-public:
-    int combinationSum4(vector<int>& nums, int target) {
-                
-        vector<int> dp(target+1 , -1);
-       
-        return  Solve(nums, target, dp);
-    }
 };
