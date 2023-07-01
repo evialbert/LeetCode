@@ -1,27 +1,33 @@
 class Solution {
-    int n;
-    int ans = INT_MAX;
-    int sum[8] = {};
 public:
-    int distributeCookies(vector<int>& cookies, int k) {
-        n = cookies.size();
-        sort(cookies.begin(), cookies.end(), greater<int>());
-        dfs(cookies, k, 0, 0);
-        return ans;
-    }
-    
-    void dfs(vector<int>& cookies, int k, int i, int maxsum) {
-        if (maxsum >= ans) return;
-        
-        if (i == n) {
-            ans = maxsum;
+    int k, res = INT_MAX;
+    vector<int> d = {0, 0, 0, 0, 0, 0, 0, 0};
+
+    void dfs(vector<int> cookies, int index, int f) {
+        if (index == cookies.size()) {
+            int curr = 0;
+            for (int i = 0; i < k; i++) curr = max(curr, d[i]);
+            res = min(res, curr);
             return;
         }
-        
-        for (int j = 0; j < k; j++) {
-            sum[j] += cookies[i];
-            dfs(cookies, k, i+1, max(maxsum, sum[j]));
-            sum[j] -= cookies[i];
+
+        for (int i = 0; i < f; i++) {
+            d[i] += cookies[index];
+            dfs(cookies, index + 1, f);
+            d[i] -= cookies[index];
         }
+
+        if (f < k) {
+            d[f] += cookies[index];
+            dfs(cookies, index + 1, f + 1);
+            d[f] -= cookies[index];
+        }
+
+    }
+
+    int distributeCookies(vector<int>& cookies, int K) {
+        k = K;
+        dfs(cookies, 0, 0);
+        return res;
     }
 };
