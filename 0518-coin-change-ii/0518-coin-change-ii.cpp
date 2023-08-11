@@ -1,44 +1,15 @@
 class Solution {
 public:
-    int topDown(int i, int x, vector<int> &coins, vector<vector<int>> &dp)
-    {
-        if (x == 0)
-            return 1;
-
-        if (dp[i][x] != -1)
-            return dp[i][x];
-
-        if (i == 0)
-        {
-            if (x % coins[0] != 0)
-                return dp[0][x] = 0;
-
-            return dp[0][x] = 1;
-        }
-
-        int picked = 0;
-        
-        int coin = coins[i];
-
-        if (x >= coin)
-            picked = topDown(i, x - coin, coins, dp);
-
-        int notPicked = topDown(i - 1, x, coins, dp);
-
-        return dp[i][x] = picked + notPicked;
-    }
-    
     int change(int amount, vector<int>& coins) {
-        int n = coins.size();
+        vector<vector<int>> dp(coins.size()+1, vector<int>(amount+1, 0));
         
-        if (amount == 0)
-            return 1;
-
-        if (n == 1)
-            return (amount % coins[0] == 0) ? 1 : 0;
-
-        vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
-
-        return topDown(n - 1, amount, coins, dp);
+        for(int i=1; i<=coins.size(); ++i)
+            for(int j=0; j<=amount; ++j){
+                if(j==0) dp[i][j]=1;
+                else if(j<coins[i-1]) dp[i][j]=dp[i-1][j];
+                else dp[i][j] = dp[i-1][j] + dp[i][j-coins[i-1]];
+            }
+        
+        return dp[coins.size()][amount];
     }
 };
