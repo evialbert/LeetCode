@@ -1,39 +1,41 @@
 class Solution {
 public:
-	vector<vector<int>> generateMatrix(int n) {
-		vector<vector<int>>mat(n,vector<int>(n));
-		int maxr=n-1,maxc=n-1,minr=0,minc=0;
-		int k=1;
-		while(k<=n*n){
-//          upper wall
-			for(int j=minc;j<=maxc;j++){
-				int i=minr;
-				mat[i][j]=k;
-				k++;
-			}
-			minr++;
-//          right wall
-			for(int i=minr;i<=maxr;i++){
-				int j=maxc;
-				mat[i][j]=k;
-				k++;
-			}
-			maxc--;
-//          lower wall
-			for(int j=maxc;j>=minc;j--){
-				int i=maxr;
-				mat[i][j]=k;
-				k++;
-			}
-			maxr--;
-//          left wall
-			for(int i=maxr;i>=minr;i--){
-				int j=minc;
-				mat[i][j]=k;
-				k++;
-			}
-			minc++;
-		}
-		return mat;
-	}
+    vector<vector<int>> generateMatrix(int n) {
+        int i = 0;
+        int j = -1;
+        int count = 0;
+        vector<int> temp(n,0);
+        vector<vector<int>> visited(n,temp);
+        while(count < n*n)
+        {
+            for(j = j+1 ; j < n && visited[i][j] == 0 ; j++)
+            {
+                count++;
+                visited[i][j] = count;
+            }
+            j--;
+
+            for(i = i+1 ; i < n && visited[i][j] == 0 ; i++)
+            {
+                count++;
+                visited[i][j] = count;
+            }
+            i--;
+
+            for(j = j-1 ; j >= 0 && visited[i][j] == 0 ; j--)
+            {
+                count++;
+                visited[i][j] = count;
+            }
+            j++;
+
+            for(i = i-1 ; i >= 0 && visited[i][j] == 0 ; i--)
+            {
+                count++;
+                visited[i][j] = count;
+            }
+            i++;
+        }
+        return visited;
+    }
 };
