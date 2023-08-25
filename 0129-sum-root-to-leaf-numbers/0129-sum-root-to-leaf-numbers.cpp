@@ -9,36 +9,29 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+class Solution 
+{
 public:
-  
-    int sumNumbers(TreeNode* root) {
-      int ans=0;
-      stack<pair<TreeNode*, int>> st;
-      st.push({root, root->val});
-      while(!st.empty())
-      {
-        
-          pair<TreeNode*, int> f=st.top();
-          st.pop();
-          if(!f.first->left && !f.first->right)
-          {
-              
-              ans+=f.second;
-          }
-          if(f.first->left)
-          {
-              st.push({f.first->left,f.second*10+f.first->left->val});
-            
-          } 
+    void f(TreeNode* root, int &sum, int val)
+    {
+        if(root==NULL) return;
+        if(root->left==NULL && root->right==NULL) 
+        {
+            sum += (val*10 + root->val);
+            return;
+        }
 
-           if(f.first->right)
-          {
-              st.push({f.first->right,f.second*10+f.first->right->val});
-            
-          } 
-      }
-      return ans;
+        val = val*10 + root->val;
+        f(root->left, sum, val);
+        f(root->right, sum, val);
         
+
+
+    }
+    int sumNumbers(TreeNode* root) 
+    {
+        int sum=0;
+        f(root, sum, 0);
+        return sum;
     }
 };
