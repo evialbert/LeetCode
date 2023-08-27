@@ -1,24 +1,8 @@
 class Solution {
 public:
     long long minimumPossibleSum(int n, int target) {
-        set<int>mp;
-        int i=1;
-        long long ans=0;
-        while(mp.size()<n)
-        {
-            int temp=target-i;
-            if(mp.find(temp)!=mp.end())
-            {
-                i++;
-            }
-             else 
-             {
-                mp.insert(i);
-                 ans+=i;
-                 i++;
-                 
-             }
-        }
-        return ans;
+        int half = target/2;
+        if( n <= half) return n*1LL*(n + 1)/2 ;
+        return half*1LL*(half + 1)/2 + ( n - half )* 1LL* target +  ( n - half)*1LL* ( n - half - 1)/2;
     }
 };
