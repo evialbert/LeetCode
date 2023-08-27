@@ -18,29 +18,34 @@
 
 class NestedIterator {
 public:
-    vector<int>nums; //store values in this vector
-    int pos = -1; //for the current position of vector
-    NestedIterator(vector<NestedInteger> &nestedList) {
-        convert(nestedList);
-        pos = 0;
-    }
-    void convert(vector<NestedInteger>&lis){
-        for(auto i:lis){
-            if(i.isInteger()) nums.push_back(i.getInteger()); // these function already defined in the NestedInteger class
+    
+    vector<int> arr;
+    int index = 0;
+    
+    void rec(vector<NestedInteger> list){
+        for(int i=0; i<list.size(); i++){
+            if(list[i].isInteger()){
+                arr.push_back(list[i].getInteger());
+            }
             else{
-                convert(i.getList()); // calling recursion
+                rec(list[i].getList());
             }
         }
     }
     
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        rec(nestedList);
+    }
+    
     int next() {
-        return nums[pos++]; //return the current pointing value
+        return arr[index++];
     }
     
     bool hasNext() {
-        return pos < nums.size(); //return whether next value is there or not.
+        return index < arr.size();
     }
 };
+
 /**
  * Your NestedIterator object will be instantiated and called as such:
  * NestedIterator i(nestedList);
