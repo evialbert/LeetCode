@@ -1,14 +1,17 @@
 class Solution {
 public:
     long long minimumReplacement(vector<int>& nums) {
-        long long res = 0;
-        int nxt = nums.back();
-        for(int i=nums.size()-2;i>=0;i--){
-            int x = nums[i];
-            int parts = (x+nxt-1)/nxt;   // used for ceil(x/nxt)
-            res += parts-1;
-            nxt = x/parts;
-        }
-        return res;
+       int n = nums.size(), nxt = 1e9+7;
+       long long ans = 0;
+       for(int i = n-1; i >= 0; i--) {
+           if(nums[i] <= nxt) {
+               nxt = nums[i];
+               continue;
+           }
+           long long parts = ceil(nums[i]/(double)nxt);
+           ans += parts-1;
+           nxt = nums[i]/parts;
+       } 
+       return ans;
     }
 };
