@@ -1,50 +1,69 @@
 class Solution {
 public:
-    const int INF = 1e9 + 7;
-    int dfs(int v, int p, vector<vector<int>>& edge, vector<int>& XOR, vector<int>& nums) {
-        int x = 0;
-        for (int u : edge[v]) {
-            if (u != p) {
-                x ^= dfs(u, v, edge, XOR, nums);
+    int time=0;
+    int dfs(map<int, vector<int>> &graph, int vertex, int parent, vector<int> &xors, vector<int> &nums, vector<int> &parents, vector<int>& intime, vector<int>& outtime){
+        intime[vertex] = time++;
+        int val = nums[vertex];
+        parents[vertex] = parent;
+        for(auto child: graph[vertex]){
+            if(child != parent){
+                val = val ^ dfs(graph, child, vertex, xors, nums, parents, intime, outtime);
             }
         }
-        x ^= nums[v];
-        XOR[v] = x;
-        return x;
-    }
-    void dfs1(int v, int p, vector<vector<int>>& edge, vector<int>& XOR, int one, int total, int& sol) {
-        for (int u : edge[v]) {
-            if (u != p) {
-                int two = XOR[u];
-                int three = total ^ two;
-                int bg = max({one, two, three});
-                int sm = min({one, two, three});
-                sol = min(sol, bg - sm);
-                dfs1(u, v, edge, XOR, one, total, sol);
-            }
-        }
+        xors[vertex] = val;
+        outtime[vertex] = time++;
+        return val;
     }
     int minimumScore(vector<int>& nums, vector<vector<int>>& edges) {
+        time = 0;
+        map<int, vector<int>> graph;
         int n = nums.size();
-        vector<vector<int>> edge(n);
-        for (const vector<int>& v : edges) {
-            edge[v[0]].push_back(v[1]);
-            edge[v[1]].push_back(v[0]);
+        for(int i=0; i<edges.size(); i++){
+            graph[edges[i][0]].push_back(edges[i][1]);
+            graph[edges[i][1]].push_back(edges[i][0]);
         }
-        int sol = INF;
-        int total = 0;
-        for (int i : nums) {
-            total ^= i;
-        }
-        for (int i = 0; i < n; i++) {
-            vector<int> XOR(n);
-            for (int u : edge[i]) {
-                dfs(i, u, edge, XOR, nums);
-                int one = total ^ XOR[i];
-                int tot = XOR[i];
-                dfs1(i, u, edge, XOR, one, tot, sol);
+        vector<int> parents(nums.size(), 0);
+        vector<int> xors(nums.size(), 0);
+        vector<int> intime(n),outtime(n);
+        dfs(graph, 0, -1, xors, nums, parents, intime, outtime);
+        int root = 0;
+        
+        int minimum = INT_MAX;
+        for(int i=1; i < n; i++)
+        {
+            for(int j=1; j < n; j++)
+            {
+                if(i==j) continue;
+                else if(intime[i] < intime[j] && outtime[i]>outtime[j])
+                {
+                    int x = xors[j];
+                    int y = xors[i] ^ xors[j];
+                    int z = xors[root] ^ xors[i];
+                    int mini = min(x, min(y,z));
+                    int maxi = max(x, max(y,z));
+                    minimum = min(minimum, maxi - mini);
+                }
+                else if(intime[i] > intime[j] && outtime[i] < outtime[j])
+                {
+                    int x = xors[i];
+                    int y = xors[i] ^ xors[j];
+                    int z = xors[root] ^ xors[j];
+                    int mini = min(x, min(y,z));
+                    int maxi = max(x, max(y,z));
+                    minimum = min(minimum, maxi - mini);
+                }
+                else 
+                {
+                    int x = xors[i];
+                    int y = xors[j];
+                    int z = xors[root] ^ xors[i] ^ xors[j];
+                    int mini = min(x, min(y,z));
+                    int maxi = max(x, max(y,z));
+                    minimum = min(minimum, maxi - mini);
+                }
             }
         }
-        return sol;
+        return minimum;
+        
     }
 };
