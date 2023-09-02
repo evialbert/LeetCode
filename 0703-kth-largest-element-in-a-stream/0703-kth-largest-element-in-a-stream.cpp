@@ -1,25 +1,23 @@
 class KthLargest {
-public:
-    priority_queue<int,vector<int>, greater<int>>minHeap;
+    priority_queue<int, vector<int>, greater<int>> p;
     int size;
+public:
     KthLargest(int k, vector<int>& nums) {
         size=k;
-        for(int ele : nums) add(ele);
+        for(int i=0; i<nums.size(); i++) {
+            p.push(nums[i]);
+            if(p.size()>k)
+              p.pop();
+        }
     }
     
     int add(int val) {
-        if(minHeap.size() < size)
-            minHeap.push(val);
-        else{
-            if(val > minHeap.top()){
-                minHeap.pop();
-                minHeap.push(val);
-            }
-        }
-        return minHeap.top();
+        p.push(val);
+        if(p.size()>size)
+            p.pop();
+     return p.top();
     }
 };
-
 /**
  * Your KthLargest object will be instantiated and called as such:
  * KthLargest* obj = new KthLargest(k, nums);
