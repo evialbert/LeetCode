@@ -1,15 +1,20 @@
 class Solution {
 public:
     bool judgeSquareSum(int c) {
-        long int lo = 0;
-        long int hi = sqrt(c);
-        while(lo <= hi){
-            if(lo*lo + hi*hi == c)
+        long long start=0,end=0;
+        while(end*end<c){
+            end++;
+        }
+        long long target=c;
+        while(start<=end){
+            long long product=start*start+end*end;
+            if(product==target){
                 return true;
-            else if(lo*lo + hi*hi > c)
-                hi--;
-            else
-                lo++;
+            } else if(product>c){
+                end--;
+            } else {
+                start++;
+            }
         }
         return false;
     }
