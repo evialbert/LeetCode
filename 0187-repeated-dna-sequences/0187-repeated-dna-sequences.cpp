@@ -1,43 +1,22 @@
 class Solution {
 public:
-    vector<string> findRepeatedDnaSequences(string str) {
+    vector<string> findRepeatedDnaSequences(string s) {
+        int n = s.size();
+        unordered_map<string,int> mp;
+        vector<string> ans;
+        int i=0;
         
-        int n = str.size();
-        
-        // store the frequency of the DNA sequence
-        
-        unordered_map<string, int> mp;
-        
-        for(int i = 0; i < n; i++)
-        {
-            // find DNA sequence of length 10
+        while(i+10 <= n){
+            string str = s.substr(i, 10);
             
-            int j = i;
-            
-            string DNA = "";
-            
-            while(j < n && DNA.size() < 10)
-            {
-                DNA += str[j];
+            if(mp.find(str) != mp.end() && mp[str] == 1)
+                ans.push_back(str);
                 
-                j++;
-            }
-            
-            // push the sequence into map
-            
-            mp[DNA]++;
+            mp[str]++;
+                
+            i++;
         }
         
-        vector<string> res;
-        
-        for(auto x : mp)
-        {
-            if(x.second > 1)
-            {
-                res.push_back(x.first);
-            }
-        }
-        
-        return res;
+        return ans;
     }
 };
