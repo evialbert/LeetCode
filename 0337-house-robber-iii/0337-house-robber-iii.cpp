@@ -10,36 +10,21 @@
  * };
  */
 class Solution {
-    
-    //Include Exclude Algorithm
-    
-    vector<int> solve(TreeNode * root){ 
-        
-        vector<int> v = {0,0}; // {include, exclude}
-        
-        if(!root)
-            return v;
-        
-        vector<int> l = solve(root->left);
-        vector<int> r = solve(root->right);
-        
-        //if we include node
-        v[0] = root->val + l[1] + r[1];
-        
-        //if we exclude node
-        v[1] = max(v[1], l[0]+r[0]); /*include both lower*/
-        v[1] = max(v[1], l[1]+r[1]); /*exclude both lower*/
-        v[1] = max(v[1], l[0]+r[1]); /*include left*/
-        v[1] = max(v[1], l[1]+r[0]); /*include right*/
-        
-        return v;
-    }
-    
 public:
+
+     pair<int,int> sum(TreeNode* root)
+    {
+        if(root==NULL)
+        {
+            return make_pair(0,0);
+        }
+        pair<int,int> p=sum(root->left);
+        pair<int,int> q=sum(root->right);
+        return make_pair(max(p.second,p.first)+max(q.first,q.second),root->val+p.first+q.first);
+    }
+
     int rob(TreeNode* root) {
-        
-        vector<int> v = solve(root);
-        return max(v[0],v[1]);
-        
+        pair<int,int> p=sum(root);
+        return max(p.first,p.second);
     }
 };
