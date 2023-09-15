@@ -1,20 +1,42 @@
 class Solution {
 public:
-    int findPairs(vector<int>& arr, int k) {
-        sort(arr.begin(), arr.end());
-        int i=0, j=1, c=0, n = arr.size();
-        while(i < n-1 && j < n){
-            int diff = arr[j]-arr[i];
-            if(diff > k) i++;
-            else if(diff == k && i!=j){
-                i++; c++; j++;
-                while(i < n-1 && arr[i-1]==arr[i]) i++;
+    int findPairs(vector<int>& nums, int k) {
+        unordered_map<int,int> m1;
+        vector<int> v1;
+        int ans = 0;
+        for(auto x : nums)
+        {
+            if(m1[x] == 0)
+            {
+                v1.push_back(x);
             }
-            else{
-                if(diff>=0) j++;
-                else j=i+1;
+            m1[x]++;
+        }
+        if(k == 0)
+        {
+            for(auto x : v1)
+            {
+                if(m1[x] > 1)
+                {
+                    ans++;
+                }
             }
         }
-        return c;
+        else
+        {
+            for(auto x : v1)
+            {
+                if(m1[x + k] > 0)
+                {
+                    ans++;
+                }
+                if(m1[x - k] > 0)
+                {
+                    ans++;
+                }
+            }
+            ans /= 2;
+        }
+        return ans;
     }
 };
