@@ -1,27 +1,12 @@
 class Solution {
 public:
     bool isSubsequence(string s, string t) {
-        int n = s.length(), m = t.length();
-        int dp[n+1][m+1];
-        memset(dp, 0, sizeof(dp));
-        for(int i=1;i<=n;i++)
+        int s_size = s.size(),t_size = t.size(),i=0,j=0;
+        while(i < s_size and j < t_size)
         {
-            for(int j=1;j<=m;j++)
-            {
-                if(s[i-1]==t[j-1])
-                {
-                    dp[i][j] = 1+dp[i-1][j-1];
-                }
-                else
-                {
-                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
-                }
-            }
+            if(s[i]==t[j]) i++;
+            j++;
         }
-        if(dp[n][m]==n)
-        {
-            return true;
-        }
-        return false;
+        return i == s_size ? true : false; 
     }
 };
