@@ -1,7 +1,9 @@
-# Write your MySQL query statement below
-SELECT DISTINCT u.name, 
-IFNULL(SUM(distance) OVER (PARTITION BY user_id), 0) as travelled_distance 
-FROM Rides r 
-RIGHT JOIN Users u 
-    ON r.user_id = u.id 
-ORDER BY travelled_distance DESC, name
+SELECT U.NAME AS 'name',
+CASE 
+WHEN U.ID NOT IN (SELECT USER_ID FROM RIDES) THEN 0
+ELSE
+	SUM(R.DISTANCE) 
+END AS 'travelled_distance'
+FROM USERS U LEFT JOIN RIDES R ON U.ID = R.USER_ID
+GROUP BY R.USER_ID
+ORDER BY travelled_distance DESC,U.NAME
