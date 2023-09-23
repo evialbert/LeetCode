@@ -1,18 +1,17 @@
 class Solution {
 public:
-    bool searchMatrix(vector<vector<int>> &matrix, int target) {
-        long long n = matrix.size(), m = matrix[0].size();
-        long long i = 0, j = m - 1;
-        while ((i >= 0 && i < n) && (j >= 0 && j < m)) {
-            if (matrix[i][j] == target) {
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int n = matrix.size();
+				//initializing row and col pointers
+				int row = 0, col = matrix[0].size() - 1;
+        
+        while(row < n && col >= 0){
+            if(matrix[row][col] == target)
                 return true;
-            }
-            else if (matrix[i][j] > target) {
-                j--;
-            }
-            else {
-                i++;
-            }
+            if(target < matrix[row][col] )
+                --col;
+            else
+                ++row;
         }
         return false;
     }
