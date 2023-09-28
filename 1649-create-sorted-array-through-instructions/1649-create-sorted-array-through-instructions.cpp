@@ -1,63 +1,55 @@
 class Solution {
-   public:
-    int createSortedArray(vector<int>& ins) {
-        const auto n = ins.size();
-        auto sorted = ins;
-        sort(sorted.begin(), sorted.end());
-
-        vector<int> lts(n, 0);
-        vector<int> gts(n, 0);
-        vector<int> eqs(n, 0);
-        int ret = 0;
-        for (auto v : ins) {
-            const auto [lt, gt] = find(sorted, lts, gts, eqs, v);
-            insert(sorted, lts, gts, eqs, v);
-
-            ret += min(lt, gt);
-            ret %= int(1e9 + 7);
-        }
-
-        return ret;
+public:
+   vector<int>seg ; 
+    int mod = 1e9+7 ;
+    int query(int ind ,int low, int high , int l ,int r )
+    {
+        if(r<low || high<l)
+            return 0 ; 
+        if(l<=low && high<=r)
+            return seg[ind]; 
+        
+        int mid= (low+high)/2 ;
+        
+        int left = query(2*ind+1 , low ,mid , l ,r ) ;
+        int right = query(2*ind+2 , mid+1, high , l ,r ) ; 
+        
+        return left+right ; 
     }
-
-    template <class T>
-    pair<int, int> find(
-        const T& a, const T& lts, const T& gts, const T& eqs, int v) {
-        int l = 0;
-        int r = a.size();
-
-        int lt = 0;
-        int gt = 0;
-        while (true) {
-            const auto m = l + (r - l) / 2;
-            if (a[m] < v) {
-                lt += lts[m] + eqs[m];
-                l = m + 1;
-            } else if (v < a[m]) {
-                gt += gts[m] + eqs[m];
-                r = m;
-            } else {
-                return {lt + lts[m], gt + gts[m]};
-            }
+    
+    void update(int ind  , int low, int high , int val )
+    {
+        if(low==high)
+        {
+            seg[ind]++ ; 
+            return  ; 
         }
+        int mid  =(low+high)/2; 
+        
+        if(val<=mid)
+            update(2*ind+1 , low, mid, val ) ;
+        else
+            update(2*ind+2 ,mid+1, high ,val ); 
+        
+        
+        seg[ind]  = seg[2*ind+1]+seg[2*ind+2]; 
     }
+    
 
-    template <class T>
-    void insert(const T& a, T& lts, T& gts, T& eqs, int v) {
-        int l = 0;
-        int r = a.size();
-        while (true) {
-            const auto m = l + (r - l) / 2;
-            if (a[m] < v) {
-                ++gts[m];
-                l = m + 1;
-            } else if (v < a[m]) {
-                ++lts[m];
-                r = m;
-            } else {
-                ++eqs[m];
-                return;
-            }
+    int createSortedArray(vector<int>& in) {
+        
+        seg.resize(400001) ;
+        long long  ans =0 ; 
+        int n = in.size() ; 
+        for(int i = 0 ;i<n ;i++ )
+        {
+            int mini = query(0 ,0 , 100001 , 0 , in[i]-1 ); 
+            int maxi = query(0 ,0 , 100001 , in[i]+1 , 100001 ) ;
+            
+            ans=(ans+min(mini , maxi))%mod ; 
+            
+            update(0 , 0, 100001 , in[i]) ; 
         }
+        return ans ;
     }
 };
