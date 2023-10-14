@@ -1,33 +1,27 @@
 class Solution {
-public:
-    int solve(vector<int> &cost,vector<int> &time,int initial_time,int idx,vector<vector<int>> &dp){
-        
-         if(initial_time<=0){
-            return 0;
-        }
+public: 
+    
+    int n , dp[501][501]; 
+    
+    int solve(int i , int left , vector<int>&cost , vector<int>& time){
 
-        if(idx==cost.size()){
-            return 1e9;
-        }
+        if(left<=0)return 0; 
+        if(i>=n)return 1e9; 
         
-        if(dp[idx][initial_time]!=-1){
-            return dp[idx][initial_time];
-        }
-       
-        
-        
-       int  taken = cost[idx]+solve(cost,time,initial_time-time[idx]-1,idx+1,dp);
-       int nottaken = solve(cost,time,initial_time,idx+1,dp);
-        
-        return   dp[idx][initial_time] = min(taken,nottaken);
-        
+        if(dp[i][left]!=-1)
+        return dp[i][left]; 
+
+        int paint = cost[i] + solve(i+1 , left-1-time[i] , cost , time); 
+        int notPaint = solve(i+1 , left , cost , time); 
+
+        return dp[i][left] = min(paint , notPaint); 
     }
-    
-    
-    
-    int paintWalls(vector<int>& cost, vector<int>& time){
-        int n = time.size();
-        vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
-        return solve(cost,time,n,0,dp);
+
+    int paintWalls(vector<int>& cost, vector<int>& time) { 
+
+        n = cost.size();  
+        memset(dp , -1 , sizeof(dp));  
+        return solve(0 , n , cost , time); 
+
     }
 };
