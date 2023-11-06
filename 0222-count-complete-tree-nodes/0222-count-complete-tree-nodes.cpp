@@ -11,9 +11,19 @@
  */
 class Solution {
 public:
+    
+    void trav(TreeNode* root, int* count)
+    {
+        if(root == NULL) return;
+        
+        (*count)++;
+        trav(root->left, count);
+        trav(root->right, count);
+    }
+    
     int countNodes(TreeNode* root) {
-        if(!root)
-            return 0;
-        return 1+countNodes(root->left)+countNodes(root->right);
+        int count = 0;
+        trav(root, &count);
+        return count;
     }
 };
