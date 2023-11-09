@@ -1,30 +1,26 @@
-class Solution 
-{
+//Time Complexity : O(N)
+//Space Complexity : O(1)
+
+class Solution {
 public:
-    int minNumberOfHours(int i, int e, vector<int>& ener, vector<int>& exp) 
-    {
-        int cnt=0, diff;
-        for(int k=0; k<ener.size(); k++)
-        {
-            if(i<=ener[k])
-            {
-                diff = (ener[k]-i+1);
-                i += diff;
-                cnt += diff;
+    int minNumberOfHours(int initialEnergy, int initialExperience, vector<int>& energy, vector<int>& experience) {
+        int n_energy = 0;
+        int n_exp = 0;
+        for(auto x : energy){
+            if(initialEnergy <= x){
+                n_energy += x-initialEnergy+1;
+                initialEnergy += x-initialEnergy+1;
             }
-            if(e<=exp[k])
-            {
-                diff = (exp[k]-e+1);
-                e += diff;
-                cnt += diff;
-            }
-            
-            i -= ener[k];
-            e += exp[k];
-                
+            initialEnergy -= x;
         }
-        return cnt;
+        for(auto x : experience){
+            if(initialExperience <= x){
+                n_exp += x-initialExperience+1;
+                initialExperience += x-initialExperience+1;
+            }
+            initialExperience += x;
+        }
         
-        
+        return n_energy+n_exp;
     }
 };
