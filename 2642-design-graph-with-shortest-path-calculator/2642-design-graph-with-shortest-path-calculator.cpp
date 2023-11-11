@@ -1,39 +1,49 @@
 class Graph {
 public:
-    vector<vector<pair<int,int>>>adj_graph;
-    Graph(int n, vector<vector<int>>& edges) {        
-        adj_graph.resize(n);
-        for(auto edge:edges){
-            adj_graph[edge[0]].push_back({edge[1],edge[2]});
+    vector<pair<int,int>> adj[100];
+    int V;
+    
+    Graph(int n, vector<vector<int>>& edges) {
+        //forming the graph
+        V = n;
+        for(auto edge : edges){
+            adj[edge[0]].push_back({edge[1],edge[2]}); //u->{v,wt};
         }
-        
     }
     
     void addEdge(vector<int> edge) {
-        adj_graph[edge[0]].push_back({edge[1],edge[2]});
-        
+        adj[edge[0]].push_back({edge[1],edge[2]});
     }
-    int shortestPath(int node1, int node2) {   
-        int n= adj_graph.size();
-        vector<int>dist(n,1e9);
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+    
+    int shortestPath(int node1, int node2) {
+        //for finding shortest path we will use djikstra's algorithm
+        vector<int> distance(V,1e9);
+        
+        //min heap to store pair as {distance,node}
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        
+        distance[node1] = 0;
+        //push starting node with distance 0 to itself;
         pq.push({0,node1});
-        dist[node1]=0;
+        
         while(!pq.empty()){
-            int node=pq.top().second;
-            int pdist=pq.top().first;
+            int dis = pq.top().first;
+            int node = pq.top().second;
             pq.pop();
-            if(node==node2)return pdist;
-            for(auto ngh:adj_graph[node]){
-                int curdist=ngh.second;
-                int adjnode=ngh.first;
-                if(curdist+pdist<dist[adjnode]){
-                    dist[adjnode]=curdist+pdist;
-                    pq.push({dist[adjnode],adjnode});
+            
+            for(auto x: adj[node]){
+                int wt = x.second;
+                int adjNode = x.first;
+                
+                //perform relaxation
+                if(dis + wt < distance[adjNode]){
+                    distance[adjNode] = dis + wt;
+                    pq.push({distance[adjNode],adjNode});
                 }
             }
         }
-        return -1;
+
+        return distance[node2] == 1e9 ?  -1 : distance[node2];
     }
 };
 
