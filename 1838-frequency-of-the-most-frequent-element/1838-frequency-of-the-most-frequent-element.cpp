@@ -1,14 +1,20 @@
 class Solution {
 public:
 	int maxFrequency(vector<int>& nums, int k) {
+        int n = nums.size(), ans = 0, left = 0;
+        long long sum = 0;
         sort(nums.begin(), nums.end());
-		long long ans = 1;
-		long long i = 0, sum = 0;
-		for (int j = 0; j < nums.size(); ++j) {
-			sum += nums[j];
-			while ((j - i + 1) * nums[j] - sum > k) sum -= nums[i++];
-			ans = max(ans, j - i + 1);
-		}
-		return ans;
-	}
+        for (int right = 0; right < n; right++) {
+            sum += nums[right];
+            long long canMakeSum = sum + k, maxSum = (1LL) * nums[right] * (1LL) * (right - left + 1);
+            while(maxSum > canMakeSum) {
+                sum -= nums[left];
+                left++;
+                canMakeSum = sum + k;     
+                maxSum = (1LL) * nums[right] * (1LL) * (right - left + 1);
+            }
+            ans = max(ans, right - left + 1);
+        }
+        return ans;
+    }
 };
