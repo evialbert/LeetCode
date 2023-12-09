@@ -1,6 +1,6 @@
 <h2><a href="https://leetcode.com/problems/concatenated-words/">472. Concatenated Words</a></h2><h3>Hard</h3><hr><div><p>Given an array of strings <code>words</code> (<strong>without duplicates</strong>), return <em>all the <strong>concatenated words</strong> in the given list of</em> <code>words</code>.</p>
 
-<p>A <strong>concatenated word</strong> is defined as a string that is comprised entirely of at least two shorter words (not necesssarily distinct)&nbsp;in the given array.</p>
+<p>A <strong>concatenated word</strong> is defined as a string that is comprised entirely of at least two shorter words (not necessarily distinct)&nbsp;in the given array.</p>
 
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
