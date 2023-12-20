@@ -1,28 +1,13 @@
-class Solution:
-    def getGoodIndices(self, v: List[List[int]], target: int) -> List[int]:
-        
-        def calc(a, n, m):
-            
-            if n == 0:
-                return 1
-            if n == 1:
-                return a%m
-            
-            temp = calc(a, n//2, m)%m
-            
-            temp = temp*temp
-            
-            if n%2 == 1:
-                temp = temp*a
-            
-            return temp%m
-        ans = []
-        
-        for i in range(len(v)):
-            temp = calc(v[i][0], v[i][1], 10)
-            temp = calc(temp, v[i][2], v[i][3])
-            
-            if temp == target:
-                ans.append(i)
-        
-        return ans
+class Solution(object):
+    def getGoodIndices(self, variables, target):
+        """
+        :type variables: List[List[int]]
+        :type target: int
+        :rtype: List[int]
+        """
+        c = []
+        for i in range(len(variables)):
+            if (((variables[i][0] ** variables[i][1]) % 10) ** variables[i][2]) % variables[i][3] == target:
+                c.append(i)
+        return c
+                
