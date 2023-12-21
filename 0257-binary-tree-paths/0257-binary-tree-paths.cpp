@@ -11,31 +11,26 @@
  */
 class Solution {
 public:
-    bool isLeaf(TreeNode* root){
-        if(root->left==NULL && root->right==NULL){
-            return true;
-        }
-        return false;
-    }
-    void helper(TreeNode* root,vector<string>& ans,string s){
-        if(root==NULL){
+    void recursion(TreeNode* root,string ds,vector<string>& ans){
+        if(root == NULL) return;
+        if(root->left == NULL && root->right == NULL){
+            ds+=to_string(root->val);
+            ans.push_back(ds);
             return;
         }
-        if(s.size()!=0) s=s+"->" + to_string(root->val);
-        else s=s+ to_string(root->val);
-        
-        if(isLeaf(root)==true){
-            ans.push_back(s);
-            return;
-        }
-        helper(root->left,ans,s);
-        helper(root->right,ans,s);
+        ds+=to_string(root->val);
+        ds+='-';
+        ds+='>';
+        recursion(root->left,ds,ans);
+        recursion(root->right,ds,ans);
         return;
     }
+    
     vector<string> binaryTreePaths(TreeNode* root) {
         vector<string> ans;
-        string s="";
-        helper(root,ans,s);
+        string ds ="";
+        recursion(root,ds,ans);
         return ans;
-    } 
+        
+    }
 };
