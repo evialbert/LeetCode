@@ -10,54 +10,36 @@
  * };
  */
 class Solution {
+    unordered_map<int, vector<int>> mp;
 public:
-    vector<vector<int>> gh;
-    void traverse(TreeNode* root){
-        if(root==nullptr)
-            return;
-        if(root->left!=nullptr)
-        gh[root->val].push_back(root->left->val);
-        if(root->right!=nullptr)
-        gh[root->val].push_back(root->right->val);
-        if(root->left!=nullptr)
-        gh[root->left->val].push_back(root->val);
-        if(root->right!=nullptr)
-        gh[root->right->val].push_back(root->val);
-        
-        traverse(root->left);
-        traverse(root->right);
-    }
-    int amountOfTime(TreeNode* root, int start) {
-        gh=vector<vector<int>>(100001);
-        traverse(root);
-        
-        queue<int> q;
-        q.push(start);
-        
-        vector<bool> vis(100001,false);
-        
-        int minTimes=0;
-        
-        vis[start]=true;
-        
-        while(!q.empty()){
-            
-            for(int i=q.size();i>0;i--){
-                
-                int x=q.front();
-                q.pop();
-                
-                for(auto it:gh[x]){
-                    if(vis[it]==false){
-                        vis[it]=true;
-                        q.push(it);
-                    }
-                }
-            }
-            
-            minTimes++;
+    void dfs(TreeNode* root){
+        if(root == NULL)return;
+        if(root->left){
+            mp[root->val].push_back(root->left->val);
+            mp[root->left->val].push_back(root->val);
+            dfs(root->left);
         }
-        
-        return minTimes-1;
+        if(root->right){
+            mp[root->val].push_back(root->right->val);
+            mp[root->right->val].push_back(root->val);
+            dfs(root->right);
+        }
+    }
+
+    int dfs2(int u, unordered_set<int> &vis){
+        vis.insert(u);
+        int ans = 0;
+        for(auto v : mp[u]){
+            if(vis.count(v) == 0){
+                ans = max(ans, 1 + dfs2(v, vis));
+            }
+        }
+        return ans;
+    }
+
+    int amountOfTime(TreeNode* root, int start) {
+        dfs(root);
+        unordered_set<int> vis;
+        return dfs2(start, vis);
     }
 };
