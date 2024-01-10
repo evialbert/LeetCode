@@ -10,36 +10,50 @@
  * };
  */
 class Solution {
-    unordered_map<int, vector<int>> mp;
 public:
-    void dfs(TreeNode* root){
-        if(root == NULL)return;
-        if(root->left){
-            mp[root->val].push_back(root->left->val);
-            mp[root->left->val].push_back(root->val);
-            dfs(root->left);
+   
+    void tree_to_graph(TreeNode* root,unordered_map<int,vector<int>> &graph)
+    {
+        if(root==NULL)
+         return ;
+        if(root->left!=NULL)
+        {
+            graph[root->val].push_back(root->left->val);
+            graph[root->left->val].push_back(root->val);
+            tree_to_graph(root->left,graph);
         }
-        if(root->right){
-            mp[root->val].push_back(root->right->val);
-            mp[root->right->val].push_back(root->val);
-            dfs(root->right);
+        if(root->right!=NULL)
+        {
+            graph[root->val].push_back(root->right->val);
+            graph[root->right->val].push_back(root->val);
+            tree_to_graph(root->right,graph);
         }
     }
-
-    int dfs2(int u, unordered_set<int> &vis){
-        vis.insert(u);
-        int ans = 0;
-        for(auto v : mp[u]){
-            if(vis.count(v) == 0){
-                ans = max(ans, 1 + dfs2(v, vis));
+    int dfs(int node,  unordered_map<int,vector<int>> &graph, vector<bool> &visited)
+    {
+        visited[node]=true;
+        int maxi=0;
+        for(auto &child:graph[node])
+        {
+            if(!visited[child])
+            {
+                int distance=dfs(child,graph,visited);
+                maxi=max(maxi,distance);
             }
         }
-        return ans;
-    }
 
+        return maxi+1;
+    }
     int amountOfTime(TreeNode* root, int start) {
-        dfs(root);
-        unordered_set<int> vis;
-        return dfs2(start, vis);
+        
+
+        unordered_map<int,vector<int>> graph;
+        tree_to_graph(root,graph);
+        vector<bool> visited(1e5+1,false);
+        return dfs(start,graph,visited)-1;
+
+
+
+
     }
 };
