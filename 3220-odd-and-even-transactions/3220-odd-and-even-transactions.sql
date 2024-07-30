@@ -1,6 +1,5 @@
-/* Write your T-SQL query statement below */
-select   transaction_date
-        ,sum(case when isnull(amount, 0) % 2 = 1 then isnull(amount, 0) else 0 end) as odd_sum
-        ,sum(case when isnull(amount, 0) % 2 = 0 then isnull(amount, 0) else 0 end) as even_sum
-from transactions
-group by transaction_date
+/* Write your PL/SQL query statement below */
+select to_char(a.transaction_date, 'YYYY-mm-dd') transaction_date, 
+(select nvl(sum(amount), 0) from transactions where transaction_date = a.transaction_date and mod(amount, 2) = 1) odd_sum,
+(select nvl(sum(amount), 0) from transactions where transaction_date = a.transaction_date and mod(amount, 2) = 0) even_sum
+from transactions a group by a.transaction_date order by a.transaction_date 
