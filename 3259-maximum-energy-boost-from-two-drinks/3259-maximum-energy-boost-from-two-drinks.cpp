@@ -1,32 +1,14 @@
-class Solution 
-{
+class Solution {
 public:
-    long long dp[2][100011];
-    long long maxEnergy(long long prev, long long i, vector<int> &a, vector<int> &b)
-    {
-        if(i>=a.size()) return 0;
-        if(prev!=-1 && dp[prev][i]!=-1) return dp[prev][i];
-        long long ans=0;
-        if(prev==0) 
-        {
-            ans=max(ans,a[i]+maxEnergy(0,i+1,a,b));
-            ans=max(ans,maxEnergy(1,i+1,a,b));
+    long long maxEnergyBoost(vector<int>& eDA, vector<int>& eDB) {
+        int n = eDA.size();
+        if (n == 1) return max(eDA[0], eDB[0]);
+        vector<long long> x(n), y(n);
+        x[0] = eDA[0], y[0] = eDB[0];
+        for (int i = 1; i < n; ++i) {
+            x[i] = eDA[i] + max(x[i-1], (i > 1 ? y[i-2] : 0));
+            y[i] = eDB[i] + max(y[i-1], (i > 1 ? x[i-2] : 0));
         }
-        else if(prev==1) 
-        {
-            ans=max(ans,b[i]+maxEnergy(1,i+1,a,b));
-            ans=max(ans,maxEnergy(0,i+1,a,b));
-        }
-        else
-        {
-            ans=max(ans,a[i]+maxEnergy(0,i+1,a,b));
-            ans=max(ans,b[i]+maxEnergy(1,i+1,a,b));
-        }
-        return dp[prev][i]=ans;
-    }
-    long long maxEnergyBoost(vector<int>& energyDrinkA, vector<int>& energyDrinkB) 
-    {
-        memset(dp,-1,sizeof(dp));
-        return maxEnergy(-1,0,energyDrinkA,energyDrinkB);
+        return max(x[n-1], y[n-1]);
     }
 };
