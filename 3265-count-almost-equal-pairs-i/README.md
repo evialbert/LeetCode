@@ -49,7 +49,7 @@
 
 <p><strong>Explanation:</strong></p>
 
-<p>We cannot swap any two digits of <code>123</code> or <code>231</code> to reach the other.</p>
+<p>We cannot swap any two digits of 123 or 231 to reach the other.</p>
 </div>
 
 <p>&nbsp;</p>
