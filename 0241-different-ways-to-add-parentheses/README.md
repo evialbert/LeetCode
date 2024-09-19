@@ -31,5 +31,6 @@
 	<li><code>1 &lt;= expression.length &lt;= 20</code></li>
 	<li><code>expression</code> consists of digits and the operator <code>'+'</code>, <code>'-'</code>, and <code>'*'</code>.</li>
 	<li>All the integer values in the input expression are in the range <code>[0, 99]</code>.</li>
+	<li>The integer values in the input expression do not have a leading <code>'-'</code> or <code>'+'</code> denoting the sign.</li>
 </ul>
 </div>
