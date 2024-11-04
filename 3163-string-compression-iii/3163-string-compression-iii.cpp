@@ -1,20 +1,18 @@
 class Solution {
 public:
     string compressedString(string word) {
-        string s="";
-        int i=0;
-        int j=0;
-    
-        while(i<word.length()){
-            if(word[i]==word[i+1] && i-j+1<9){
-                i++;
+        string ans = "";
+        for (int i = 0; i < word.length(); ) {
+            char c = word[i];
+            int j = i, cnt = 0;
+            while (j < word.length() && word[j] == c && cnt < 9) {
+                cnt++;
+                j++;
             }
-            else{
-                s+=to_string(i-j+1)+word[i];
-                j=++i;
-            }
+            ans += to_string(cnt);
+            ans.push_back(c);
+            i = j;
         }
-        return s;
-        
+        return ans;
     }
 };
