@@ -7,9 +7,7 @@
 	<li>Add an integer in the range <code>[-k, k]</code> to <code>nums[i]</code>.</li>
 </ul>
 
-<p>Return the <strong>maximum</strong> possible <strong>frequency</strong> of any element in <code>nums</code> after performing the <strong>operations</strong>.</p>
-
-<p>The <strong>frequency</strong> of an element <code>x</code> is the number of times it occurs in the array.</p>
+<p>Return the <strong>maximum</strong> possible <span data-keyword="frequency-array">frequency</span> of any element in <code>nums</code> after performing the <strong>operations</strong>.</p>
 
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
