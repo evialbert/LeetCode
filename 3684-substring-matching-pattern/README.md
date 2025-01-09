@@ -2,9 +2,7 @@
 
 <p>The <code>&#39;*&#39;</code> in <code>p</code> can be replaced with any sequence of zero or more characters.</p>
 
-<p>Return <code>true</code> if <code>p</code> can be made a substring of <code>s</code>, and <code>false</code> otherwise.</p>
-
-<p>A <strong>substring</strong> is a contiguous <b>non-empty</b> sequence of characters within a string.</p>
+<p>Return <code>true</code> if <code>p</code> can be made a <span data-keyword="substring-nonempty">substring</span> of <code>s</code>, and <code>false</code> otherwise.</p>
 
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
