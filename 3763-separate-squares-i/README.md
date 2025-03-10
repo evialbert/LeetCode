@@ -51,4 +51,5 @@
 	<li><code>squares[i].length == 3</code></li>
 	<li><code>0 &lt;= x<sub>i</sub>, y<sub>i</sub> &lt;= 10<sup>9</sup></code></li>
 	<li><code>1 &lt;= l<sub>i</sub> &lt;= 10<sup>9</sup></code></li>
+	<li>The total area of all the squares will not exceed <code>10<sup>12</sup></code>.</li>
 </ul>
