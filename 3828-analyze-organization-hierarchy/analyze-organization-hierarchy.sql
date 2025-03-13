@@ -1,59 +1,36 @@
-# Write your MySQL query statement below
-WITH RECURSIVE EmployeeLevels AS (
-    SELECT
-        employee_id,
-        employee_name,
-        manager_id,
-        salary,
-        1 AS level
-    FROM Employees
-    WHERE manager_id IS NULL
-    UNION ALL
-    SELECT
-        e.employee_id,
-        e.employee_name,
-        e.manager_id,
-        e.salary,
-        el.level + 1 AS level
-    FROM Employees e
-    INNER JOIN EmployeeLevels el ON e.manager_id = el.employee_id
-),
-Subordinates AS (
-    SELECT
-        e.employee_id AS manager_id,
-        r.employee_id AS subordinate_id,
-        r.salary AS subordinate_salary
-    FROM Employees e
-    JOIN Employees r ON r.manager_id = e.employee_id
-    UNION ALL
-    SELECT
-        s.manager_id,
-        e.employee_id AS subordinate_id,
-        e.salary AS subordinate_salary
-    FROM Subordinates s
-    JOIN Employees e ON e.manager_id = s.subordinate_id
-),
-TeamSize AS (
-    SELECT
-        manager_id,
-        COUNT(DISTINCT subordinate_id) AS team_size
-    FROM Subordinates
-    GROUP BY manager_id
-),
-Budget AS (
-    SELECT
-        manager_id,
-        SUM(subordinate_salary) AS total_subordinate_salary
-    FROM Subordinates
-    GROUP BY manager_id
+-- Write your PostgreSQL query statement below
+
+-- Search for simple levels
+WITH RECURSIVE CTE AS(
+	SELECT employee_id, manager_id , employee_name , salary, 1 AS level
+	FROM Employees
+	WHERE manager_id IS NULL
+	UNION ALL
+	SELECT E.employee_id, E.manager_id, E.employee_name, E.salary, level + 1 AS level
+	FROM Employees E, CTE C
+	WHERE E.manager_id = C.employee_id
+), 
+-- Search for levels within each other, by passing each employee code into the search loop.
+CTE2 AS(
+	SELECT  DISTINCT C.employee_id, C.employee_name, C.level,  
+    -- total number of levels
+    COUNT(E.employee_id) OVER(PARTITION BY C.employee_id) team_size, 
+    -- Salary Budget
+    COALESCE( SUM(E.salary) OVER(PARTITION BY C.employee_id), 0) + C.salary AS budget
+	FROM CTE C
+	LEFT JOIN LATERAL (
+        -- Loop through each employee to find all interdependent management levels.
+		WITH RECURSIVE CTE1  AS (
+			SELECT employee_id, manager_id, salary
+			FROM Employees E
+			WHERE E.manager_id = C.employee_id -- first employee_id
+			UNION ALL
+			SELECT EE.employee_id, EE.manager_id, EE.salary
+			FROM CTE1 CC, Employees EE
+			WHERE EE.manager_id = CC.employee_id -- loop until there are no more dependent employees.
+		)
+		SELECT * FROM CTE1  
+	) E ON 1 = 1
 )
-SELECT
-    el.employee_id,
-    el.employee_name,
-    el.level,
-    COALESCE(ts.team_size, 0) AS team_size,
-    COALESCE(b.total_subordinate_salary, 0) + el.salary AS budget
-FROM EmployeeLevels el
-LEFT JOIN TeamSize ts ON el.employee_id = ts.manager_id
-LEFT JOIN Budget b ON el.employee_id = b.manager_id
-ORDER BY level ASC, budget DESC, employee_name ASC;
+SELECT * FROM CTE2
+ORDER BY level, budget DESC, employee_name;
