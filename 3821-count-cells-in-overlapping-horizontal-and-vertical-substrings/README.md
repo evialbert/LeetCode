@@ -16,7 +16,7 @@
 <p><strong class="example">Example 1:</strong></p>
 <img alt="" src="https://assets.leetcode.com/uploads/2025/03/03/gridtwosubstringsdrawio.png" style="width: 150px; height: 187px;" />
 <div class="example-block">
-<p><strong>Input:</strong> <span class="example-io">grid = [[&quot;a&quot;,&quot;a&quot;,&quot;c&quot;,&quot;c&quot;],[&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;],[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;a&quot;],[&quot;c&quot;,&quot;a&quot;,&quot;a&quot;,&quot;c&quot;],[&quot;a&quot;,&quot;a&quot;,&quot;c&quot;,&quot;c&quot;]], pattern = &quot;abaca&quot;</span></p>
+<p><strong>Input:</strong> <span class="example-io">grid = [[&quot;a&quot;,&quot;a&quot;,&quot;c&quot;,&quot;c&quot;],[&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;],[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;a&quot;],[&quot;c&quot;,&quot;a&quot;,&quot;a&quot;,&quot;c&quot;],[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;a&quot;]], pattern = &quot;abaca&quot;</span></p>
 
 <p><strong>Output:</strong> <span class="example-io">1</span></p>
 
