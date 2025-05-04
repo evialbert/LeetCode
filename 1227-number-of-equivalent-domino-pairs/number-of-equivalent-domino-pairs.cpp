@@ -1,23 +1,19 @@
 class Solution {
-struct pair_hash {
-  size_t operator() (const pair<int, int>& p) const {
-      return ((size_t)p.first << 32) | p.second;
-  }
-};
-
 public:
     int numEquivDominoPairs(vector<vector<int>>& dominoes) {
-        auto result = 0;
-        const auto size = dominoes.size();
-        unordered_map<pair<int, int>, int, pair_hash> counter;
-        for (auto i = 0; i < size; ++i) {
-            ++counter[make_pair(min(dominoes[i][0], dominoes[i][1]), max(dominoes[i][0], dominoes[i][1]))];
+        int n = dominoes.size();
+        map<vector<int>, int> m;
+        for(int i = 0; i < n; i++) {
+            sort(dominoes[i].begin(), dominoes[i].end());
+            m[dominoes[i]]++;
         }
-        for (const auto& pair : counter) {
-            if (pair.second > 1) {
-                result += pair.second * (pair.second - 1) / 2;
+        int sum = 0;
+        for(auto i : m) {
+            int count = i.second;
+            if(count > 1) {
+                sum += (count * (count - 1)) / 2;
             }
         }
-        return result;
+        return sum;
     }
 };
