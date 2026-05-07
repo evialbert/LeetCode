@@ -1,41 +1,22 @@
-
-
 class Solution {
 public:
-    vector<int> maxValue(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> prefix(n, INT_MIN);
-        vector<int> surfix(n, INT_MAX);
-        int pre = 0;
-        for (int i = 0; i < n; i++) 
-        {
-            prefix[i] = max(nums[i], pre);
-            pre = prefix[i];
-        }
-        int sur = INT_MAX;
-        for (int i = n - 1; i >= 0; i--)
-        {
-            surfix[i] = min(sur, nums[i]);
-            sur = surfix[i];
+    static vector<int> maxValue(vector<int>& nums) {
+        const int n=nums.size();
+        vector<int> prefMax(n), sufMin(n);
+        prefMax[0]=nums[0];
+        sufMin[n-1]=nums[n-1];
+
+        for(int i=1; i<n; i++){
+            const int x=nums[i], y=nums[n-1-i];
+            prefMax[i]=max(prefMax[i-1], x);
+            sufMin[n-1-i]=min(sufMin[n-i], y);
         }
         vector<int> ans(n);
-        int start = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (i == n - 1 || (prefix[i] <= surfix[i + 1]))
-            {
-                int end = i + 1;
-                int mx = 0;
-                for (int j = start; j < end; j++)
-                {
-                    mx = max(mx, nums[j]);
-                }
-                for (int j = start; j < end; j++)
-                {
-                    ans[j] = mx;
-                }
-                start = end;
-            }
+        ans[n-1]=prefMax[n-1];
+        for(int i=n-2; i>=0; i--){
+            if (prefMax[i]>sufMin[i+1]) 
+                ans[i]=max(prefMax[i], ans[i+1]);
+            else ans[i]=prefMax[i];
         }
         return ans;
     }
